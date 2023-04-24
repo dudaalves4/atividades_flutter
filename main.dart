@@ -1,17 +1,40 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const atv2());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ComponenteInicial extends StatelessWidget {
+ void eventobotao(){
+  print("clicou");
+ }
 
-  // This widget is the root of your application.
-  @override
+
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Projeto Flutter',
+      home: Scaffold(
+        appBar: AppBar
+        (
+          title: Text("perguntas e respostas"),
+      ),
+         body: Column(
+          children: [
+          ElevatedButton(
+            onPressed: eventobotao,
+            child: Text("enviar")),
+            ElevatedButton(
+              onPressed: eventobotao, 
+              child: Text("salvar")),
+              ElevatedButton(
+              onPressed: eventobotao, 
+              child: Text("cancelar")),
+              ElevatedButton(
+              onPressed: eventobotao, 
+              child: Text("meu botão")),
+              Text("Aprendendo sobre componentes")
+
+         ],)  ),
+      title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,7 +47,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Maria Eduarda Alves dos Reis Batista'),
+      
     );
   }
 }
@@ -96,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'Maria Eduarda 3°B',
+              'Leticia Da Silva Rodrigues',
             ),
             Text(
               '$_counter',
