@@ -1,61 +1,61 @@
 import 'package:flutter/material.dart';
-import './botao.dart';
-import 'textos.dart';
 
-void main() {
-  runApp(AulaGrupoUm());
-}
+import 'Telas/tela_categoria.dart';
+import 'Telas/tela_produtos.dart';
+import 'data/produtos.dart';
+import 'models/produtos.dart';
+import 'utils/rotas.dart';
 
-class AulaGrupoUm extends StatefulWidget {
+void main() => runApp(AppCardapio());
+
+class AppCardapio extends StatelessWidget {
+  Future<List<dynamic>> teste = categoria_produtos();
+
   @override
-  State<AulaGrupoUm> createState() => _AulaGrupoUmState();
-}
-
-class _AulaGrupoUmState extends State<AulaGrupoUm> {
-  var contador = 0;
-  final questoes = [
-    "Tem animal de estimação?",
-    "Prefere azul ou amarelo?",
-    "Usa mais wpp ou instagram?",
-    "Seu animal favorito?"
-  ];
-
-  void clique() {
-    setState(() {
-      contador:
-      contador++;
-    });
-    print(contador);
-  }
-
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text("Meu primeiro aplicativo"),
+      title: 'Cardápio',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Schyler',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              titleSmall: const TextStyle(
+            fontSize: 20,
+            fontFamily: "Schyler",
           ),
-          body: Column(
-            children: [
-              Perguntas(questoes[contador]),
-              ElevatedButton(
-                onPressed: clique,
-                child: Text('prox pergunta'),
-              ),
-              Margin(),
-              ElevatedButton(
-                onPressed: () {
-                  print("função anonima");
-                },
-                child: Text('Função anônima'),
-              ),
-              Margin(),
-              ElevatedButton(
-                  onPressed: () => print("Funçaõ arrow"),
-                  child: Text('Função arrow')),
-              Margin(),
-              Botao("Botao componente")
-            ],
-          )),
+        ),
+      ),
+      routes: {
+        Rotas.HOME: (ctx) => TelaCategorias(),
+        Rotas.PRODUTOS: (ctx) => FutureBuilder<List<dynamic>>(
+          future: teste,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            } else {
+              if (snapshot.hasError) {
+                return Scaffold(
+                  body: Center(
+                    child: Text('Erro ao carregar os produtos!'),
+                  ),
+                );
+              } else {
+                // Converte a lista dinâmica para List<Produto>
+                List<Produto> produtos = (snapshot.data as List<dynamic>)
+                    .map((item) => Produto.fromJson(item))
+                    .toList();
+                    print("Aqui aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                print(produtos[0].title);
+                return TelaProdutos(produtos);
+              }
+            }
+          },
+        ),
+      },
     );
   }
 }
